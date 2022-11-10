@@ -18,11 +18,17 @@ const initializeWebSocketConnection = () => {
     if (data.message == "playpause") {
       playPause();
     }
-    if (data.message == "rewind_back") {
-      rewind(-10);
+    if (data.message == "rewind") {
+      seek(-10);
     }
-    if (data.message == "rewind_forward") {
-      rewind(10);
+    if (data.message == "forward") {
+      seek(10);
+    }
+    if (data.message == "restart") {
+      restart();
+    }
+    if (data.message == "next") {
+      next();
     }
 
   };
@@ -38,7 +44,7 @@ const playPause = () => {
   
   var video = document.getElementsByTagName("video") [0];
   
-  console.log("play/pause youtube video");
+  console.log("play/pause video");
   if (video.paused) {
     video.play();
   } else {
@@ -46,13 +52,40 @@ const playPause = () => {
   }
 };
 
-const rewind = (seconds) => {
+const seek = (seconds) => {
   if (!isSupported(window.location.hostname)) return;
 
   var video = document.getElementsByTagName("video") [0];
   
-  console.log("rewind " + seconds + " seconds");
+  console.log("added " + seconds + " seconds");
   video.currentTime = video.currentTime + seconds;
+};
+
+const restart = () => {
+  if (!isSupported(window.location.hostname)) return;
+
+  var video = document.getElementsByTagName("video") [0]
+  console.log("restart video");
+  if (video.paused) {
+    video.currentTime = 0;
+    video.play();
+  } else {
+    video.pause();
+    video.currentTime = 0;
+    video.play();
+  }
+};
+
+const next = () => {
+  if (!isSupported(window.location.hostname)) return;
+
+  var video = document.getElementsByTagName("video") [0]
+
+  if (window.location.hostname == "learning.anaconda.cloud") {
+    console.log("next video");
+    document.querySelector("a.next-lesson-link").dispatchEvent(new Event('mouseup'));
+    setTimeout(video.play(), 500);
+  }
 };
 
 initializeWebSocketConnection();
