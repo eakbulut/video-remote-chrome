@@ -84,7 +84,9 @@ const next = () => {
   if (window.location.hostname == "learning.anaconda.cloud") {
     console.log("next video");
     document.querySelector("a.next-lesson-link").dispatchEvent(new Event('mouseup'));
-    setTimeout(video.play(), 500);
+    setTimeout(window.onload = () => {
+      video.play();
+    }, 100);
   }
 };
 
